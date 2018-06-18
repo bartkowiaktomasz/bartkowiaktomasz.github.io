@@ -1,11 +1,3 @@
----
-feature_name: Web Bluetooth / Device Info (Async Await)
-chrome_version: 55
-check_min_version: true
-feature_id: 5264933985976320
-icon_url: icon.png
-index: index.html
----
 
 <form>
   <label for="allDevices">All Devices</label>
@@ -15,9 +7,8 @@ index: index.html
   <input id="namePrefix" type="text" size=17 placeholder="Device Name Prefix">
   <button>Get Bluetooth Device Info</button>
 </form>
-
-<script src ="device-info.async.await.js">
-
+<script src ="medium.js"></script>
+/*
   document.querySelector('form').addEventListener('submit', function(event) {
     event.stopPropagation();
     event.preventDefault();
@@ -26,4 +17,4 @@ index: index.html
       onButtonClick();
     }
   });
-</script>
+*/
