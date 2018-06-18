@@ -23,8 +23,8 @@
 		window.onload = () => {
 			document.getElementById('connect').onclick = connectBLE;
 		}
-    
-    function connectBLE() {
+
+    async function connectBLE() {
       let filters = [];
 
       let filterService = document.querySelector('#service').value;
@@ -46,11 +46,7 @@
       }
 
       let options = {};
-      if (document.querySelector('#allDevices').checked) {
-        options.acceptAllDevices = true;
-      } else {
-        options.filters = filters;
-      }
+      options.acceptAllDevices = true;
 
       log('Requesting Bluetooth Device...');
       log('with ' + JSON.stringify(options));
