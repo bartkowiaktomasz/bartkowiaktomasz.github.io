@@ -1,28 +1,20 @@
+<html>
+  <form>
+    <label for="allDevices">All Devices</label>
+    <input id="allDevices" type="checkbox">
+    <button>Get Bluetooth Device Info</button>
+  </form>
 
----
-feature_name: Web Bluetooth / Device Info
-chrome_version: 45
-check_min_version: true
-feature_id: 5264933985976320
-icon_url: icon.png
-index: index.html
----
+  <script src="ble.js"></script>
 
-<form>
-  <label for="allDevices">All Devices</label>
-  <input id="allDevices" type="checkbox">
-  <button>Get Bluetooth Device Info</button>
-</form>
-
-<script src="ble.js"></script>
-
-<script>
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    if (isWebBluetoothEnabled()) {
-      ChromeSamples.clearLog();
-      onButtonClick();
-    }
-  });
-</script>
+  <script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.stopPropagation();
+      event.preventDefault();
+      if (isWebBluetoothEnabled()) {
+        ChromeSamples.clearLog();
+        onButtonClick();
+      }
+    });
+  </script>
+</html>
