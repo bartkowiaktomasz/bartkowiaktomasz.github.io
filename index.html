@@ -1,11 +1,12 @@
-<html>
+  {% include_relative _includes/intro.html %}
+
   <form>
     <label for="allDevices">All Devices</label>
     <input id="allDevices" type="checkbox">
     <button>Get Bluetooth Device Info</button>
   </form>
 
-  <script src="ble.js"></script>
+{% include js_snippet.html filename='device-info-async-await.js' %}
 
   <script>
     document.querySelector('form').addEventListener('submit', function(event) {
@@ -17,6 +18,7 @@
       }
     });
 
+  log = ChromeSamples.log;
   function isWebBluetoothEnabled() {
     if (navigator.bluetooth) {
       return true;
@@ -27,4 +29,5 @@
     }
   }
 </script>
-</html>
+
+{% include_relative _includes/utils.html %}
