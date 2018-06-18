@@ -1,20 +1,71 @@
-
-<form>
-  <label for="allDevices">All Devices</label>
-  <input id="allDevices" type="checkbox">
-  <input id="service" type="text" size=17 list="services" placeholder="Bluetooth Service">
-  <input id="name" type="text" size=17 placeholder="Device Name">
-  <input id="namePrefix" type="text" size=17 placeholder="Device Name Prefix">
-  <button>Get Bluetooth Device Info</button>
-</form>
-<script src ="medium.js"></script>
-/*
-  document.querySelector('form').addEventListener('submit', function(event) {
-    event.stopPropagation();
-    event.preventDefault();
-    if (isWebBluetoothEnabled()) {
-      ChromeSamples.clearLog();
-      onButtonClick();
-    }
-  });
-*/
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Arduino/Genuino 101 CurieIMU Web Bluetooth Orientation Visualiser</title>
+	<style>
+		body{
+			font-family: Helvetica;
+			text-align:center;
+		}
+		ol{
+			width:400px;
+			text-align:left;
+			margin:0 auto;
+		}
+	</style>
+</head>
+<body>
+	<h1>Arduino/Genuino 101 CurieIMU Web Bluetooth Orientation Visualiser</h1>
+	<ol>
+		<li>Follow the instructions <a href="https://github.com/w4ilun/web-bluetooth-curie-imu">here</a></li>
+		<li>Click <button id="connect">Connect</button></li>
+		<li>Visualize (and Profit)</li>
+	</ol>
+	<canvas data-processing-sources="processing.pde"></canvas>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/processing.js/1.6.2/processing.min.js"></script>
+	<script>
+		//BLE
+		let service        	= 0xBEEF;
+		let characteristic 	= 0xFEED;
+		let byteLength		= 20;
+		//IMU global vars for processing
+		let yaw   = 0.0;
+		let pitch = 0.0;
+		let roll  = 0.0;
+		window.onload = () => {
+			document.getElementById('connect').onclick = connectBLE;
+		}
+		function connectBLE(){
+			//BLE setup. Connect and get service/characteristic notifications
+			navigator.bluetooth.requestDevice({ filters: [{ services: [service] }] })
+			.then(device => device.gatt.connect())
+			.then(server => server.getPrimaryService(service))
+			.then(service => service.getCharacteristic(characteristic))
+			.then(characteristic => {
+				return characteristic.startNotifications()
+				.then(_ => {
+					characteristic.addEventListener('characteristicvaluechanged',
+			                        handleCharacteristicValueChanged);
+				});
+			})
+			.then(_ => {
+				console.log('Notifications have been started.');
+			})
+			.catch(error => { console.log(error); });
+			function handleCharacteristicValueChanged(event){
+				var value 	= event.target.value;
+				var str 	= "";
+				//concat and split string for roll, pitch, yaw (e.g. "-0.58,2.20,328.76")
+				for(var i=0; i<byteLength; i++){
+					str = str + String.fromCharCode(value.getUint8(i));
+				}
+				var imu 	= str.split(',');
+				//update globals
+				roll 		= parseFloat(imu[0]);
+				pitch 		= parseFloat(imu[1]);
+				yaw 		= parseFloat(imu[2]);
+			}
+		}
+	</script>
+</body>
+</html>
