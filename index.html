@@ -1,12 +1,11 @@
-  {% include_relative _includes/intro.html %}
-
+  <script src="intro.js"></script>
   <form>
     <label for="allDevices">All Devices</label>
     <input id="allDevices" type="checkbox">
     <button>Get Bluetooth Device Info</button>
   </form>
 
-{% include js_snippet.html filename='device-info-async-await.js' %}
+  <script src="device-info-async-await.js"></script>
 
   <script>
     document.querySelector('form').addEventListener('submit', function(event) {
@@ -30,4 +29,4 @@
   }
 </script>
 
-{% include_relative _includes/utils.html %}
+<script src="utils.js"></script>
